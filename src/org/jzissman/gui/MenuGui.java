@@ -25,23 +25,18 @@ import org.jzissman.clipboard.ClipboardHelper;
 
 public class MenuGui {
 
-	private static final Logger logger = Logger.getLogger(MenuGui.class.getName());
-	private List<String> allCopiedTextEntries;
 	private JFrame frame = null;
+	private List<String> allCopiedTextEntries = null;
 	
-	public MenuGui(List<String> allCopiedTextEntries) {
-		this.allCopiedTextEntries = allCopiedTextEntries;
-	}
-
 	public void closeFrame() {
 		if (frame != null) {
 			frame.dispose();
 		}
 	}
 	
-	public void show() {
-		String[] selectedTextArray = formatCopiedText(allCopiedTextEntries);
-		JList list = createMenuList(selectedTextArray);
+	public void show(List<String> allCopiedTextEntries) {
+		this.allCopiedTextEntries = allCopiedTextEntries;
+		JList list = createMenuList();
 		frame = createMenuFrame(list);
 		frame.toFront();
 		frame.setVisible(true);
@@ -66,7 +61,6 @@ public class MenuGui {
 		frame.setUndecorated(true);
 		frame.getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(180,180,180)));
 		frame.setForeground(new Color(70,70,70));
-//		frame.setBackground(new Color(225,225,225,200));
 		frame.add(list);
 		frame.setSize(300, 30 + allCopiedTextEntries.size() * 25);
 		int x = MouseInfo.getPointerInfo().getLocation().x;
@@ -108,9 +102,11 @@ public class MenuGui {
 	}
 
 	@SuppressWarnings({"rawtypes", "unchecked"})
-	private JList createMenuList(String[] selectedTextArray) {
+	private JList createMenuList() {
 		
-		JList list = new JList(selectedTextArray);
+		String[] formattedSelectedTextArray = formatCopiedText(allCopiedTextEntries);
+		
+		JList list = new JList(formattedSelectedTextArray);
 		Font font = new Font("Tahoma", Font.PLAIN, 14);
 		list.setFont(font);
 		list.setFixedCellHeight(25);
@@ -121,13 +117,13 @@ public class MenuGui {
 		MouseListener mouseListener = createClickListener(list);
 		list.addMouseListener(mouseListener);
 		
-		KeyListener keyListener = createEnterKeyListener(list);
+		KeyListener keyListener = createKeyListener(list);
 		list.addKeyListener(keyListener);
 		
 		return list;
 	}
 
-	private KeyListener createEnterKeyListener(final JList list) {
+	private KeyListener createKeyListener(final JList list) {
 		KeyListener keyListener = new KeyListener() {
 			
 			@Override
@@ -140,8 +136,11 @@ public class MenuGui {
 			
 			@Override
 			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+				int keyCode = e.getKeyCode();
+				if (keyCode == KeyEvent.VK_ENTER || keyCode == KeyEvent.VK_SPACE) {
 					handleMenuItemSelected(list.getSelectedIndex());
+				} else if (keyCode == KeyEvent.VK_ESCAPE){
+					closeFrame();
 				}
 			}
 		};

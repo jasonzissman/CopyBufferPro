@@ -22,7 +22,7 @@ public class ClipboardCopyListener implements FlavorListener {
 	public void flavorsChanged(FlavorEvent e) {
 		try {
 			String text = clipboardHelper.getClipboardText();
-			if (text.equals(clipboardDataManager.getLastCopiedText()) == false){
+			if (clipboardDataManager.getAllCopiedTextEntries().contains(text) == false){
 				onTextCopy(text);
 			}
 		} catch (Exception ex) {

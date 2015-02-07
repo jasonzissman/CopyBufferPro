@@ -14,7 +14,6 @@ import java.util.logging.Logger;
 public class ClipboardHelper implements ClipboardOwner {
 	
 	private static final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
-	private final Logger logger = Logger.getLogger(ClipboardHelper.class.getName()); 
 	
 	public void setClipcboardText(final String text) {
 		StringSelection contents = new StringSelection(text);
@@ -29,6 +28,7 @@ public class ClipboardHelper implements ClipboardOwner {
 		if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			data = (String) contents.getTransferData(DataFlavor.stringFlavor);
 		}
+		
 		return data;
 	}
 	
@@ -46,6 +46,6 @@ public class ClipboardHelper implements ClipboardOwner {
 	}
 
 	public void lostOwnership(Clipboard clipboard, Transferable contents) {
-		// We'll get it backs oon!
+		// We'll get it backs soon!
 	}
 }
