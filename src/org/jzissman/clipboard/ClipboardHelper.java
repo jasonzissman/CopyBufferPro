@@ -4,6 +4,7 @@ import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
 import java.awt.datatransfer.UnsupportedFlavorException;
 import java.io.IOException;
@@ -15,6 +16,11 @@ public class ClipboardHelper implements ClipboardOwner {
 	private static final Clipboard SYSTEM_CLIPBOARD = Toolkit.getDefaultToolkit().getSystemClipboard();
 	private final Logger logger = Logger.getLogger(ClipboardHelper.class.getName()); 
 	
+	public void setClipcboardText(final String text) {
+		StringSelection contents = new StringSelection(text);
+		SYSTEM_CLIPBOARD.setContents(contents, null);
+	}
+	
 	public String getClipboardText() throws UnsupportedFlavorException, IOException {
 		
 		String data = "";
@@ -23,7 +29,6 @@ public class ClipboardHelper implements ClipboardOwner {
 		if (contents.isDataFlavorSupported(DataFlavor.stringFlavor)) {
 			data = (String) contents.getTransferData(DataFlavor.stringFlavor);
 		}
-		
 		return data;
 	}
 	
