@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import org.jzissman.clipboard.ClipboardDataManager;
 import org.jzissman.clipboard.ClipboardHelper;
+import org.jzissman.gui.MenuGui;
 
 import com.melloware.jintellitype.HotkeyListener;
 import com.melloware.jintellitype.JIntellitype;
@@ -14,6 +15,7 @@ public class Starter {
 	private static final Logger logger = Logger.getLogger(Starter.class.getName());
 	private static final ClipboardHelper clipboardHelper = new ClipboardHelper();
 	private static final ClipboardDataManager clipboardDataManager = new ClipboardDataManager();	
+	private static MenuGui menu;
 	private static ControlShiftVListener hotKeyListener;
 	private static boolean KEEP_APP_ALIVE = true;
 	
@@ -33,7 +35,7 @@ public class Starter {
 
 			@Override
 			public void execute() {
-				System.out.println(clipboardDataManager.getAllCopiedTextEntries().toString());
+				menu = new MenuGui(clipboardDataManager.getAllCopiedTextEntries());
 			}
 			
 		};
