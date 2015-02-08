@@ -18,7 +18,9 @@ import java.util.logging.Logger;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.SwingConstants;
 import javax.swing.border.EmptyBorder;
 
 import org.jzissman.clipboard.ClipboardHelper;
@@ -42,6 +44,14 @@ public class MenuGui {
 		frame.setVisible(true);
 	}
 
+	private JLabel createEmptyMenuLabel() {
+		JLabel label = new JLabel("Your copy buffer is empty!", SwingConstants.CENTER);
+		label.setBorder(new EmptyBorder(10, 10, 10, 10));
+		Font font = new Font("Tahoma", Font.PLAIN, 14);
+		label.setFont(font);
+		return label;
+	}
+
 	private void handleMenuItemSelected(int selectedIndex) {
 		closeFrame();
 		String selectedItem = allCopiedTextEntries.get(selectedIndex);
@@ -61,8 +71,14 @@ public class MenuGui {
 		frame.setUndecorated(true);
 		frame.getRootPane().setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(180,180,180)));
 		frame.setForeground(new Color(70,70,70));
-		frame.add(list);
 		frame.setSize(300, 30 + allCopiedTextEntries.size() * 25);
+		
+		if (allCopiedTextEntries.size() == 0){
+			frame.add(createEmptyMenuLabel());
+		} else {
+			frame.add(list);
+		}
+
 		int x = MouseInfo.getPointerInfo().getLocation().x;
 		int y = MouseInfo.getPointerInfo().getLocation().y;
 		frame.setLocation(x, y);
@@ -101,6 +117,9 @@ public class MenuGui {
 		return frame;
 	}
 
+	// TODO - GUI enhancements - hover highlight text, line delimiters on menu
+	// TODO - GUI enhancements - message if nothing copied
+	
 	@SuppressWarnings({"rawtypes", "unchecked"})
 	private JList createMenuList() {
 		
