@@ -139,6 +139,8 @@ public class MenuGui {
 		KeyListener keyListener = createKeyListener(list);
 		list.addKeyListener(keyListener);
 		
+		list.setCellRenderer(new MenuCellRenderer());
+		
 		return list;
 	}
 
@@ -178,7 +180,7 @@ public class MenuGui {
 	private String[] formatCopiedText(List<String> originalEntries) {
 		List<String> formattedTextEntries = new ArrayList<String>();
 		for (String text : originalEntries) {
-			if (text.length() > 30){
+			if (text.length() > 40){
 				text = text.substring(0,40) + "...";
 			}
 			formattedTextEntries.add(text);
